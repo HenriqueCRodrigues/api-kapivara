@@ -16,6 +16,10 @@ class PipedriveRepository {
         };
     }
     
+    setConfigsRepository = (configs) => {
+        return this.configs = configs;
+    }
+
     getDeals = async (req, res, next) => {
         this.apiService.setConfigCall(this.configs, 'deals');
         let data = await this.apiService.call();
