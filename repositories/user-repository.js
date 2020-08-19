@@ -9,7 +9,6 @@ class UserRepository {
     }
 
     store = async (req, res, next) => {
-        let response;
         let user = bcrypt.hash(req.password, 10).then(async hash => {
             let user = new User({
                 name: req.name,
@@ -22,9 +21,9 @@ class UserRepository {
                     expiresIn: 86400
                   });
 
-                  response = {data: usr, token: token, status: 200};
+                  return {data: usr, token: token, status: 200};
             }).catch(err => {
-                response = {data:err, status: 500};
+                return {data:err, status: 500};
             });    
         });
 
