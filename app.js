@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const db = require('./database/index');
 
 const routes = [
     {
@@ -13,8 +14,21 @@ const routes = [
         file: 'bling', info: [
             {path: require('./routes/bling-route'), name: '/bling'}
         ],
+    },
+    {
+        file: 'integration', info: [
+            {path: require('./routes/integration-route'), name: '/integration'}
+        ],
     }
 ];
+
+db.connection.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+db.connection.once('error', (err) => {
+    console.log(err);
+});
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
