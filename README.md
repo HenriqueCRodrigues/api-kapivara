@@ -9,6 +9,11 @@ Foi realizado a criação da API, que captura as oportunidades no Pipedrive e pe
 * Exceto a rota 'user/create' e 'user/login', as demais precisa do token para realizar requisições
 * Após o login, basta atualizar o seu usuário, com os tokens do pipedrive e bling
 * Já esta pronto para usar, não se esquece de ajustar as variáveis de ambiente
+* Para funcionar no localmente, precisa inserer informações referente a API do Bling e Pipedrive 
+* Para o Pipedrive, deve-se criar uma collection ```pipedrives``` e dar insert desse document ```{"_id":{"$oid":"5f3cc42403e4538f3cff85be"},"url":"https://api.pipedrive.com/","version":"v1","params":"status=won&start=0","meta":[{"attribute":"params","input":["api_token"]}]}``` na collection ```pipedrives```
+* Para o Bling, deve-se criar uma collection ```blings``` e dar insert desse document ```{"_id":{"$oid":"5f3ccb3503e4538f3cff85c0"},"url":"https://bling.com.br/Api/","version":"v2","params":"","meta":[{"attribute":"params","input":["apikey","xml"]}]}``` na collection ```blings``` 
+
+
 
 ### Bônus
 * Foi hospedado no heroku a aplicação: https://api-kapivara.herokuapp.com
