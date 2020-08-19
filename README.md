@@ -5,7 +5,7 @@
 ## Desafio LinkApi
 Foi realizado a criação da API, que captura as oportunidades no Pipedrive e persiste no Bling e Mongodb Atlas<br>
 
-* Melhor gestão foi adicionado a opção de cadastrar usuário
+* Para ter uma gestão melhor, foi adicionado a opção de cadastrar usuário
 * Exceto a rota 'user/create' e 'user/login', as demais precisa do token para realizar requisições
 * Após o login, basta atualizar o seu usuário, com os tokens do pipedrive e bling
 * Já esta pronto para usar, não se esquece de ajustar as variáveis de ambiente
@@ -30,7 +30,7 @@ Foi realizado a criação da API, que captura as oportunidades no Pipedrive e pe
 
 ####  user/create
 ```
-Rota do tipo POST, retorna o usuário cadastro e seu token de acesso.
+Rota do tipo POST, cria um usuário e retorna seu token.
 
 Exemplo da requisição
 
@@ -61,7 +61,7 @@ Response esperado
 
 ####  user/login
 ```
-Rota do tipo POST
+Rota do tipo POST, se tiver sucesso na autenticação retorna o token
 
 Exemplo da requisição
 {
@@ -84,7 +84,7 @@ Response esperado
 
 ####  user/update
 ```
-Rota do tipo PUT
+Rota do tipo PUT, atualiza as informações de usuário
 
 Exemplo da requisição
 {
@@ -108,7 +108,7 @@ Response esperado
 
 ####  pipedrive/deals
 ```
-Rota do tipo GET, retorna uma view com as informações do crawler com o link para download da planilha
+Rota do tipo GET, retorna todos as oportunidades do pipedrive
 
 Response esperado
 
@@ -360,14 +360,13 @@ Response esperado
 
 ####  bling/order
 ```
-Rota do tipo POST, retorna uma view com as informações do crawler com o link para download da planilha
-Aplicação tem suporte, mas não foi realizada requisições via essa rota
+Rota do tipo POST, Aplicação tem suporte, mas não foi realizada requisições via essa rota
 ```
 <br>
 
 ####  integration/pipedrive-order-bling
 ```
-Rota do tipo POST
+Rota do tipo POST, Aqui a mágica acontece, é capturado as ofertas do pipedrive, envia para o bling como pedido, e cria no mongo as informações relevante dessa operação.
 
 Response Esperado
 
@@ -411,7 +410,7 @@ Response Esperado
 
 ####  integration/pipedrive-order-bling
 ```
-Rota do tipo GET
+Rota do tipo GET, retorna as operação realizada com pipedrive e bling
 
 Response Esperado
 
