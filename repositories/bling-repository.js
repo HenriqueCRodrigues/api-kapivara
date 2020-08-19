@@ -1,4 +1,5 @@
 const ApiService = require('../services/api-service');
+const js2xmlparser = require("js2xmlparser");
 
 class BlingRepository {
 
@@ -15,26 +16,37 @@ class BlingRepository {
             xml: ''
         };
     }
+
+    setConfigsRepository = (configs) => {
+      return this.configs = configs;
+    }
     
     storeOrder = async (req, res, next) => {
-        this.configs.xml = this.buildXml(req);
+        this.configs.xml = this.buildXml(this.configs.xml);
         this.apiService.setConfigCall(this.configs, 'pedido/json', null, req);
         let data = await this.apiService.call();
+        
+        if (data.retorno.pedidos) {
+            data = data.retorno.pedidos[0];
+        
+        } else if (data.retorno.erros) {
+          data = data.retorno.erros[0];
+        }
+
         return data; 
     }
 
     buildXml = (deal) => {
         const order = {
-          pedido: {
             cliente: {
-              nome: deal.clientName,
+              nome: deal.person_name,
               tipoPessoa: 'J',
-              email: deal.email,
+              email: deal.person_id.email.value,
             },
             itens: [
               {
                 item: {
-                  codigo: '001',
+                  codigo: deal.id,
                   descricao: deal.title,
                   un: 'un',
                   qtde: 1,
@@ -42,10 +54,9 @@ class BlingRepository {
                 },
               },
             ]
-          }
         };
     
-        const orderXml = js2xmlparser.parse('raiz', order, { declaration: { encoding: 'UTF-8' } })
+        const orderXml = encodeURIComponent(js2xmlparser.parse('pedido', order, { declaration: { encoding: 'UTF-8' } }));
         return orderXml
     }
 }
