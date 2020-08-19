@@ -7,7 +7,7 @@ class PipedriveController {
     }
 
     getDeals = async (req, res, next) => {
-        let data = await this.pipedriveRepository.getDeals();
+        let data = await this.pipedriveRepository.getDeals(req);
         res.status(data.status).send(data);
     }
 }

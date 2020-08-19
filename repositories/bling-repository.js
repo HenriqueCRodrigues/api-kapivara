@@ -1,39 +1,51 @@
 const ApiService = require('../services/api-service');
 const js2xmlparser = require("js2xmlparser");
+const Bling = require('../models/bling');
 
 class BlingRepository {
 
     constructor() {
         this.apiService = new ApiService();
-        this.configs = {
-            url: 'https://bling.com.br/Api/',
-            version: 'v2',
-            meta: [
-                {attribute: 'params', input:['apikey', 'xml']},
-            ],
-            apikey: '0d1a35654d5bdd1697a911e49842323a7d522b1dff5beadc3143c40cf2f168da29f9ab04',
-            method: 'post',
-            xml: ''
-        };
+        this.configs = {};
     }
 
     setConfigsRepository = (configs) => {
       return this.configs = configs;
     }
-    
-    storeOrder = async (req, res, next) => {
-        this.configs.xml = this.buildXml(this.configs.xml);
-        this.apiService.setConfigCall(this.configs, 'pedido/json', null, req);
-        let data = await this.apiService.call();
-        
-        if (data.retorno.pedidos) {
-            data = data.retorno.pedidos[0];
-        
-        } else if (data.retorno.erros) {
-          data = data.retorno.erros[0];
-        }
 
-        return data; 
+    setConfigs = async (req) => {
+      let bling = await Bling.findOne().then(bling => bling);
+
+      let configs = {
+          url: bling.url,
+          version: bling.version,
+          params: bling.params,
+          meta: [
+            {attribute: 'params', input:['apikey', 'xml']}
+          ],
+          apikey: req.session.user.bling ? req.session.user.bling.apikey : '',
+          method: 'POST',
+          xml: ''
+      };
+
+      return configs;
+    }
+    
+    storeOrder = async (req, deal) => {
+      this.configs = await this.setConfigs(req);
+      this.configs.xml = this.buildXml(deal);
+
+      this.apiService.setConfigCall(this.configs, 'pedido/json', null, req);
+      let data = await this.apiService.call();
+
+      if (data.retorno.pedidos) {
+          data = data.retorno.pedidos[0];
+      
+      } else if (data.retorno.erros) {
+        data = data.retorno.erros[0];
+      }
+
+      return data; 
     }
 
     buildXml = (deal) => {

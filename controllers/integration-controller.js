@@ -7,14 +7,13 @@ class IntegrationController {
     }
 
     pipedriveOrderBling = async (req, res, next) => {
-        let data = await this.integrationRepository.pipedriveOrderBling();
+        let data = await this.integrationRepository.pipedriveOrderBling(req);
         res.status(data.status).send(data);
     }
 
-
     getOrdersIntegrate = async (req, res, next) => {
         let data = await this.integrationRepository.getOrdersIntegrate();
-        res.status(200).send({data: data, status: 200});
+        res.status(data.status).send(data);
     }
 }
 
