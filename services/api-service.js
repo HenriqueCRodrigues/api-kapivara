@@ -17,7 +17,6 @@ class ApiService {
 
     setMetaConfig = (meta, remove = true) => {
         meta.filter((element) => {
-            console.log()
             element.input.forEach(item => {
                 if (element.attribute === 'params') {
                     this.configs[element.attribute] = this.configs[element.attribute].concat(['&', item, '=', this.configs[item]].join(''));
@@ -52,6 +51,14 @@ class ApiService {
             this.configs.endpoint, 
             this.configs.params, 
         ].join('');
+    }
+
+    setArrayConfigCall = (configs) => {
+        return this.configs = configs;
+    }
+
+    getArrayConfigCall = () => {
+        return this.configs;
     }
 
     call() {
